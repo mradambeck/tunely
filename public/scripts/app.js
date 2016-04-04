@@ -6,8 +6,12 @@
  */
 
 
+
 /* hard-coded data! */
+var $albumsTarget;
+var albumTemplate;
 var sampleAlbums = [];
+
 sampleAlbums.push({
              artistName: 'Ladyhawke',
              name: 'Ladyhawke',
@@ -39,14 +43,29 @@ sampleAlbums.push({
 
 $(document).ready(function() {
   console.log('app.js loaded!');
+
+  var albumSource = $('#album-template').html();
+  albumTemplate = Handlebars.compile(albumSource);
+
+  $albumsTarget = $('#albums');
+
+  renderAlbums(sampleAlbums);
 });
 
 
-
-
-
 // this function takes a single album and renders it to the page
-function renderAlbum(album) {
-  console.log('rendering album:', album);
+function renderAlbums(albums) {
+  console.log('rendering albums:', albums);
+
+  // empty existing posts from view
+  $albumsTarget.empty();
+
+  // pass `allPeople` into the template function
+  var albumsHtml = albumTemplate({ albums: sampleAlbums });
+
+  console.log('albumTemplate: ', albumTemplate);
+  console.log('albumHtml: ', albumsHtml);
+  // append html to the view
+  $albumsTarget.append(albumsHtml);
 
 }
