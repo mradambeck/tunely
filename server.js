@@ -13,6 +13,8 @@ app.use(express.static(__dirname + '/public'));
 app.use('/vendor', express.static(__dirname + '/bower_components'));
 
 var controllers = require('./controllers');
+var db = require('./models');
+var renderedAlbums = [];
 
 
 /**********
@@ -33,6 +35,17 @@ app.get('/', function homepage (req, res) {
  */
 
 app.get('/api', controllers.api.index);
+
+app.get('/api/albums', function (req, res){
+  console.log('server.js, /api/albums: ', req);
+  // res.json(renderedAlbums);
+  db.Album.find(function (err, albums){
+    if (err) {
+      console.log('error: app.get /api/albums :: ', err);
+    }
+    res.json(albums);
+  });
+});
 
 /**********
  * SERVER *

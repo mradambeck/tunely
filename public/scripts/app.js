@@ -6,66 +6,41 @@
  */
 
 
-
-/* hard-coded data! */
 var $albumsTarget;
-var albumTemplate;
-var sampleAlbums = [];
 
-sampleAlbums.push({
-             artistName: 'Ladyhawke',
-             name: 'Ladyhawke',
-             releaseDate: '2008, November 18',
-             genres: [ 'new wave', 'indie rock', 'synth pop' ]
-           });
-sampleAlbums.push({
-             artistName: 'The Knife',
-             name: 'Silent Shout',
-             releaseDate: '2006, February 17',
-             genres: [ 'synth pop', 'electronica', 'experimental' ]
-           });
-sampleAlbums.push({
-             artistName: 'Juno Reactor',
-             name: 'Shango',
-             releaseDate: '2000, October 9',
-             genres: [ 'electronic', 'goa trance', 'tribal house' ]
-           });
-sampleAlbums.push({
-             artistName: 'Philip Wesley',
-             name: 'Dark Night of the Soul',
-             releaseDate: '2008, September 12',
-             genres: [ 'piano' ]
-           });
-/* end of hard-coded data */
-
-
-
+var albums = [];
 
 $(document).ready(function() {
   console.log('app.js loaded!');
 
-  var albumSource = $('#album-template').html();
-  albumTemplate = Handlebars.compile(albumSource);
+  $.ajax({
+    method: 'GET',
+    url: '/api/albums',
+    success: handleSuccess,
+    error: handleError
+  });
 
-  $albumsTarget = $('#albums');
-
-  renderAlbums(sampleAlbums);
 });
 
+function handleSuccess(json){
+  console.log("success: ", json);
+  renderAlbum(json);
+}
 
-// this function takes a single album and renders it to the page
-function renderAlbums(albums) {
-  console.log('rendering albums:', albums);
+function handleError(xhr, status, errorThrown){
+  console.log('api/albums handleError: ', xhr, status, errorThrown);
+}
 
-  // empty existing posts from view
-  $albumsTarget.empty();
+function renderAlbum(albums){
+  console.log("renderAlbum: ", albums);
+  //capture html for handlebars
+  var albumSource = $('#album-template').html();
+  //compile handlebars template
+  var albumTemplate = Handlebars.compile(albumSource);
 
-  // pass `allPeople` into the template function
-  var albumsHtml = albumTemplate({ albums: sampleAlbums });
-
-  console.log('albumTemplate: ', albumTemplate);
-  console.log('albumHtml: ', albumsHtml);
-  // append html to the view
-  $albumsTarget.append(albumsHtml);
+  albums.forEach(function (album){
+    var html = albumTemplate(album);
+    $('#albums').prepend(html);
+  });
 
 }
