@@ -4,6 +4,7 @@
 var express = require('express');
 // generate a new express app and call it 'app'
 var app = express();
+var bodyParser = require('body-parser');
 
 // serve static files from public folder
 app.use(express.static(__dirname + '/public'));
@@ -13,7 +14,7 @@ app.use(express.static(__dirname + '/public'));
 app.use('/vendor', express.static(__dirname + '/bower_components'));
 
 // Add body-parser
-var bodyParser = require('body-parser');
+
 app.use(bodyParser.urlencoded({ extended: true }));
 
 var controllers = require('./controllers');
@@ -41,8 +42,9 @@ app.get('/', function homepage (req, res) {
 app.get('/api', controllers.api.index);
 
 app.get('/api/albums', controllers.albums.index);
-
+app.get('/api/albums/:albumId', controllers.albums.show);
 app.post('/api/albums', controllers.albums.create);
+app.post('/api/albums/:albumId/songs', controllers.albumsSongs.create);
 
 /**********
  * SERVER *
