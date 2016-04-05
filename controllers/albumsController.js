@@ -1,6 +1,6 @@
 /************
- * DATABASE *
- ************/
+* DATABASE *
+************/
 
 var db = require('../models');
 
@@ -52,14 +52,19 @@ function index(req, res) {
 }
 
 function create(req, res) {
-  console.log('create: ', req.body);
+
+  // SPLIT GENRES INTO AN ARRAY
+  var genres = req.body.genres.split(',').map(function(item) {
+    return item.trim(); 
+  });
+  req.body.genres = genres;
+
   var newAlbum = new db.Album(req.body);
   newAlbum.save(function handleDBSave(err, data){
     if (err){
       console.log('handleDBSave err: ', err);
     }
     res.json(data);
-    console.log('handleDBSave: ', data);
   });
 }
 

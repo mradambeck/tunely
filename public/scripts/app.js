@@ -37,7 +37,17 @@ $(document).ready(function() {
     $(this).trigger("reset");
   });
 
+  $('#albums').on('click', '.add-song', function(click){
+    var currentAlbumId = $(this).closest('.album').data('album-id');
+    console.log('app.js, .add-song click');
+    console.log(currentAlbumId);
+    $('#songModal').modal();
+    $('#songModal').attr('data-album-id', currentAlbumId);
+  });
+
 });
+
+
 
 // form submit handlers
 
