@@ -12,6 +12,10 @@ app.use(express.static(__dirname + '/public'));
 // We're placing these under /vendor to differentiate them from our own assets
 app.use('/vendor', express.static(__dirname + '/bower_components'));
 
+// Add body-parser
+var bodyParser = require('body-parser');
+app.use(bodyParser.urlencoded({ extended: true }));
+
 var controllers = require('./controllers');
 var db = require('./models');
 var renderedAlbums = [];
@@ -36,16 +40,9 @@ app.get('/', function homepage (req, res) {
 
 app.get('/api', controllers.api.index);
 
-app.get('/api/albums', function (req, res){
-  console.log('server.js, /api/albums: ', req);
-  // res.json(renderedAlbums);
-  db.Album.find(function (err, albums){
-    if (err) {
-      console.log('error: app.get /api/albums :: ', err);
-    }
-    res.json(albums);
-  });
-});
+app.get('/api/albums', controllers.albums.index);
+
+app.post('/api/albums', controllers.albums.create);
 
 /**********
  * SERVER *
