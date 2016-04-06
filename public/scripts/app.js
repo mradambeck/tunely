@@ -20,7 +20,6 @@ $(document).ready(function() {
   $('#newAlbumForm').on('submit', function(event) {
     event.preventDefault();
     var formData = $(this).serialize();
-    console.log('app.js - new album serialized', formData);
 
     $.ajax({
       method: 'POST',
@@ -30,10 +29,6 @@ $(document).ready(function() {
       error: newAlbumError
     });
 
-    // $.post('/api/albums', formData, function(album){
-    //   console.log('app.js - album after POST: ', album);
-    //   renderAlbum(album);
-    // });
     $(this).trigger("reset");
   });
 
@@ -81,16 +76,17 @@ $(document).ready(function() {
     // close modal
     $('#songModal').modal('hide');
     // update the correct album to show the new song
+  
   });
 
 });
 
 // new song submit handlers
 function newSongSuccess(data){
-  console.log('app.js, newSongSuccess: ',data);
+  console.log('app.js, newSongSuccess: ', data);
 }
 function newSongError(data){
-  console.log('app.js, newSongError: ',data);
+  console.log('app.js, newSongError: ', data);
 }
 
 // form submit handlers

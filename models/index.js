@@ -3,5 +3,5 @@ mongoose.connect("mongodb://localhost/tunely");
 
 // import models:
 
-module.exports.Album = require("./song.js");
+module.exports.Song = require("./song.js");
 module.exports.Album = require("./album.js");

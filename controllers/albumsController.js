@@ -42,7 +42,9 @@ function create(req, res) {
 
 
 function show(req, res) {
-  // FILL ME IN !
+  db.findById(req.params.albumId, function(err, foundAlbum){
+    res.json(foundAlbum);
+  });
 }
 
 function destroy(req, res) {
